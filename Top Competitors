@@ -1,0 +1,20 @@
+/*
+Enter your query here. MYSQL
+*/
+
+
+SELECT hacker_id, name
+FROM(
+SELECT  H.hacker_id, H.name, C.challenge_id,C.difficulty_level, D.score AS max_score,
+S.submission_id, S.score
+FROM Submissions S
+JOIN Hackers H
+ON H.hacker_id = S.hacker_id
+JOIN Challenges C
+ON S.challenge_id = C.challenge_id
+JOIN Difficulty D
+ON D.difficulty_level = C.difficulty_level
+WHERE S.score = D.score ) full_score
+GROUP BY hacker_id,name
+HAVING Count(challenge_id) > 1
+ORDER BY Count(challenge_id) DESC, hacker_id ASC;
